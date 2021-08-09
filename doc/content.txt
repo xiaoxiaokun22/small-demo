@@ -28,5 +28,29 @@ tableSizeFor(25) = 32
     自定义容量时，hashtable直接使用这个容量。hashmap则会取大于等于这个数的2的幂次方的最小整数。
 底层数据结构：hashtable就是数组+链表。而hashmap是数组+链表+红黑树，当链表长度大于等于阈值8时，会先判断数组长度是不是小于64，
     如果小于64，会先对数组扩容,否则，会将链表转化为红黑树。
-8.hashmap和treemap的区别是什么？
-
+8.hashmap的put(key,value)操作流程？
+首先，判断数组tab是否为空，是的话扩容初始化一个长度为16的数组。如果数组中已经有元素了，接下来，计算新元素要放到的数组下标位置，
+计算公式为index=hash(key)&(n-1)，然后判断tab[index]位置有没有元素，没有元素直接放到这个位置，有的话（hahs冲突），判断hash和key
+是否相等，相等则直接覆盖。不相等那么判断该元素是不是树结构，是的话对树添加新元素。不是树的话就循环链表。。。
+9.hashmap和treemap的区别 TODO
+treemap实现了接口NavigableMap，从而增加了对键排序的能力。
+构造函数public TreeMap(Comparator<? super K> comparator)
+10.hashmap在多线程下会发生什么(jdk1.7和1.8分别说明)？
+jdk1.7的hashmap在put()元素时会形成闭环（循环链表），get()元素时会发生死循环。
+jdk1.8解决了闭环和死循环的问题，但是还是不建议多线程使用hashmap，因为还有可能造成元素丢失。
+11.hashmap什么情况下会rehash？
+在hashmap数组需要扩容的时候。扩容实际是新建一个数组，把老数组的数据转移到新数组的过程。
+而在这个过程中，需要重新元素要放到新数组的哪个下标位置，这个过程可以称为rehash。
+12.jdk1.7下的hashmap为什么会形成循环链表？TODO
+13.jdk1.7下的hashmap为什么会发生死循环？TODO
+14.map的7种循环
+https://mp.weixin.qq.com/s/zQBN3UvJDhRTKP6SzcZFKw
+15.为什么重写equals()必须重写hashCode()方法
+主要原因在使用HashSet，HashSet等hash类时，会出现一些问题。
+比如在使用HashSet时，如果不重写hashCode()方法，会造成数据不去重问题。
+User u1 = new User(1,"hgk");
+User u2 = new User(1,"hgk");
+HashSet<User> hashset = new HashSet<>();
+hashset.add(u1);
+hashset.add(u2);
+hashset.size 输出为2，而不是1。

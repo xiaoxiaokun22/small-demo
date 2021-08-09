@@ -12,6 +12,7 @@ import com.hgk.boot.zdemo14.static_proxy.PersonProxy;
 import lombok.Data;
 import net.sf.cglib.core.DebuggingClassWriter;
 
+import javax.swing.text.Segment;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -28,7 +29,7 @@ public class CharTest {
 //        test01();
 //        test02();
 //        test03();
-//        test04();
+        test04();
 //        test05();
 //        test06();
 //        test07();
@@ -42,7 +43,8 @@ public class CharTest {
 //        test15();
 //        test16();
 //        test17();
-        test18();
+//        test18();
+//        test19();
     }
 
     private static class A{
@@ -557,7 +559,53 @@ public class CharTest {
         }
 //        MyHashMap<String,Object> myHashMap = new MyHashMap<>();
 //        myHashMap.put("name","haoguokun");
-
-        System.out.println(hashMap);
+        //treemap排序
+        TreeMap<String,Object> treeMapList = new TreeMap<>();
+        treeMapList.put("1","wp");
+        treeMapList.put("13","hgk");
+        treeMapList.put("6","xx");
+        treeMapList.put("99","ba");
+        treeMapList.put("51","fz");
+        System.out.println(treeMapList);
     }
+
+    /**
+     * 探究hashmap7种循环方式的执行效率
+     * 1.使用迭代器（Iterator）EntrySet 的方式进行遍历；
+     * 2.使用迭代器（Iterator）KeySet 的方式进行遍历；
+     * 3.使用 For Each EntrySet 的方式进行遍历；
+     * 4.使用 For Each KeySet 的方式进行遍历；
+     * 5.使用 Lambda 表达式的方式进行遍历；
+     * 6.使用 Streams API 单线程的方式进行遍历；
+     * 7.使用 Streams API 多线程的方式进行遍历。
+     */
+    public static void test19(){
+        HashMap<String,Object> map = new HashMap<>();
+        for(int i=1;i<=500;i++){
+            map.put("name" + i,"wp" + i);
+        }
+        long startTime,endTime = 0;
+        //1.使用迭代器（Iterator）EntrySet 的方式进行遍历
+        startTime = System.currentTimeMillis();
+        Iterator<Map.Entry<String,Object>> iterator = map.entrySet().iterator();
+        while (iterator.hasNext()){
+            Map.Entry<String,Object> entry = iterator.next();
+//            System.out.println("key:" + entry.getKey() + ",value:" +entry.getValue());
+        }
+        endTime = System.currentTimeMillis();
+        System.out.println( "使用迭代器（Iterator）EntrySet 的方式进行遍历:" + (endTime - startTime));
+        //2.使用迭代器（Iterator）KeySet 的方式进行遍历
+        startTime = System.currentTimeMillis();
+        Iterator<String> iterator1 = map.keySet().iterator();
+        while (iterator1.hasNext()){
+            String key = iterator1.next();
+//            System.out.println("key:" + iterator1.next());
+        }
+        endTime = System.currentTimeMillis();
+        System.out.println("使用迭代器（Iterator）KeySet 的方式进行遍历:" + (endTime - startTime));
+        //3.使用 For Each EntrySet 的方式进行遍历
+
+    }
+
+
 }
