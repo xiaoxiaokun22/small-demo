@@ -1,25 +1,29 @@
-package com.hgk.boot.struct.link;
+package com.hgk.boot.struct.double_link_head;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-/**
- * 节点
- */
-@Data
+@Getter
+@Setter
 public class Node<E> {
     E data;
+    Node<E> pre;
     Node<E> next;
 
     public Node(E data){
         this.data = data;
+        this.pre = null;
         this.next = null;
+
     }
 
-    public Node(E data, Node<E> next){
+    public Node(E data, Node<E> pre, Node<E> next){
         this.data = data;
+        this.pre = pre;
         this.next = next;
     }
 
@@ -35,5 +39,4 @@ public class Node<E> {
         return res;
 
     }
-
 }

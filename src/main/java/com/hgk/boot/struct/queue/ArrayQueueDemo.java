@@ -1,5 +1,8 @@
 package com.hgk.boot.struct.queue;
 
+/**
+ * 顺序队列
+ */
 public class ArrayQueueDemo {
     public static void main(String[] args){
         ArrayQueue arrayQueue = new ArrayQueue(6);

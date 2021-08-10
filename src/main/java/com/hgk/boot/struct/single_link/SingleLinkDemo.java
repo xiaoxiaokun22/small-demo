@@ -1,4 +1,4 @@
-package com.hgk.boot.struct.link;
+package com.hgk.boot.struct.single_link;
 
 import lombok.Data;
 
@@ -89,5 +89,17 @@ public class SingleLinkDemo {
         singleLink.printLink();
         singleLink.delete(new Node<>(new User(33,"王洋","内蒙古")));
         singleLink.printLink();
+        singleLink.deleteByIndex(2);
+        singleLink.printLink();
+        singleLink.deleteFirstByAddress("厦门");
+        singleLink.printLink();
+        singleLink.headInsert(new Node<>(new User(51,"李雷","福建")));
+        singleLink.afterInsert(new Node<>(new User(62,"白空","福建")));
+        singleLink.printLink();
+        singleLink.deleteAllByAddress("福建");
+        singleLink.printLink();
+        singleLink.reverse();
+        singleLink.printLink();
+        singleLink.printLinkAfter();
     }
 }

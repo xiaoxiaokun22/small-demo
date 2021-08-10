@@ -1,9 +1,9 @@
-package com.hgk.boot.struct.link;
+package com.hgk.boot.struct.single_link;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.LinkedList;
+import java.util.Stack;
 
 /**
  *  单链表(不带头节点)
@@ -11,14 +11,14 @@ import java.util.LinkedList;
  *  1.初始化链表 构造函数SingleLink()
  *  2.清空链表 void clear()
  *  ---增---
- *  1.尾插法 void headInsert(Node<E> node)
- *  2.头插法 void afterInsert(Node<E> node)
+ *  1.尾插法 void afterInsert(Node<E> node)
+ *  2.头插法 void headInsert(Node<E> node)
  *  3.指定第n个节点之后插入一个节点 void insertByIndex(int n,Node<E> node)
  *  ---删---
  *  1.头部删除 void headDelete()
  *  2.尾部删除 void afterDelete()
- *  3.删除出现的第一个元素 void deteleFirstByAddress(String address)
- *  4.删除出现的所有元素 void deteleAllByAddress(String address)
+ *  3.删除出现的第一个元素 void deleteFirstByAddress(String address)
+ *  4.删除出现的所有元素 void deleteAllByAddress(String address)
  *  5.删除指定节点 void delete(Node<E> node)
  *  6.删除第n个节点 void deleteByIndex(int n)
  *  ---改---
@@ -31,8 +31,11 @@ import java.util.LinkedList;
  *  4.获取指定节点的位置 int get(Node<E> node)
  *  5.获取最后一个节点 Node<E> getLast()
  *  6.获取链表长度 int getLength()
+ *  7.从尾到头打印链表 void printLinkAfter()
  *  ---反转---
  *  1.反转链表 void reverse()
+ *  ---其他---
+ *  1.合并两个有序的单链表，合并之后的链表依然有序 TODO
  */
 public class SingleLink<E> {
 
@@ -71,14 +74,14 @@ public class SingleLink<E> {
             size++;
             return;
         }
-        Node<E> temp = head;
+        Node<E> cur = head;
         while (true){
-            if(temp.next == null){
-                temp.next = node;
+            if(cur.next == null){
+                cur.next = node;
                 size++;
                 break;
             }
-            temp = temp.next;
+            cur = cur.next;
         }
         return;
     }
@@ -97,6 +100,18 @@ public class SingleLink<E> {
         size++;
     }
 
+    Node<E> headInsert(Node<E> head,Node<E> node){
+        if(head == null){
+            head = node;
+            size++;
+            return head;
+        }
+        node.next = head;
+        head = node;
+        size++;
+        return head;
+    }
+
     /**
      * 指定位置后插入一个节点
      */
@@ -112,10 +127,10 @@ public class SingleLink<E> {
             return;
         }
         int i = 1;
-        for(Node<E> temp = head;temp != null;temp = temp.next,i++){
+        for(Node<E> cur = head;cur != null;cur = cur.next,i++){
             if(i == n){
-                node.next = temp.next;
-                temp.next = node;
+                node.next = cur.next;
+                cur.next = node;
                 break;
             }
         }
@@ -134,19 +149,19 @@ public class SingleLink<E> {
         }
         StringBuffer sb = new StringBuffer();
         //循环方式二
-//        Node<E> temp = head;
+//        Node<E> cur = head;
 //        do{
-//            E data = temp.data;
+//            E data = cur.data;
 //            sb.append(data.toString());
-//            if(temp.next != null )
+//            if(cur.next != null )
 //                sb.append("=>");
-//            temp = temp.next;
-//        }while (temp != null);
+//            cur = cur.next;
+//        }while (cur != null);
         //
-        for(Node<E> temp = head;temp != null;temp = temp.next){
-            E data = temp.data;
+        for(Node<E> cur = head;cur != null;cur = cur.next){
+            E data = cur.data;
             sb.append(data.toString());
-            if(temp.next != null )
+            if(cur.next != null )
                 sb.append("=>");
         }
         System.out.print( "size:" + size + ","+ sb.toString());
@@ -161,8 +176,8 @@ public class SingleLink<E> {
         if(node == null)
             return;
         Boolean isEqualKey = false;
-        for(Node<E> temp = head;temp != null;temp = temp.next){
-            E data = temp.getData();
+        for(Node<E> cur = head;cur != null;cur = cur.next){
+            E data = cur.getData();
             try {
                 Method method = data.getClass().getDeclaredMethod("isEqualKey",data.getClass());
                 isEqualKey = (Boolean) method.invoke(data,node.getData());
@@ -171,7 +186,7 @@ public class SingleLink<E> {
                 break;
             }
             if(isEqualKey){
-                temp.setData(node.getData());
+                cur.setData(node.getData());
                 break;
             }
         }
@@ -186,16 +201,16 @@ public class SingleLink<E> {
         }
         int i = 1;
         Node<E> pre = null;
-        for(Node<E> temp = head;temp != null;temp = temp.next,i++){
+        for(Node<E> cur = head;cur != null;cur = cur.next,i++){
             if(i == n){
-                node.next = temp.next;
+                node.next = cur.next;
                 if(pre == null)
                     head = node;
                 else
                     pre.next = node;
                 break;
             }
-            pre = temp;
+            pre = cur;
         }
     }
 
@@ -207,9 +222,9 @@ public class SingleLink<E> {
             throw new RuntimeException("超出链表长度");
         }
         int i = 1;
-        for(Node<E> temp = head;temp != null;temp = temp.next,i++){
+        for(Node<E> cur = head;cur != null;cur = cur.next,i++){
             if(i == n)
-                return temp;
+                return cur;
         }
         return null;
     }
@@ -250,8 +265,8 @@ public class SingleLink<E> {
      */
     int get(Node<E> node){
         int i = 0;
-        for (Node<E> temp = head;temp != null;temp = temp.next){
-            if(node.equalsData(temp)){
+        for (Node<E> cur = head;cur != null;cur = cur.next){
+            if(node.equalsData(cur)){
                 break;
             }
             i++;
@@ -263,11 +278,11 @@ public class SingleLink<E> {
      * 获取最后一个节点
      */
     Node<E> getLast(){
-        Node<E> temp = head;
+        Node<E> cur = head;
         do{
-            temp = temp.next;
-        }while (temp.next != null);
-        return temp;
+            cur = cur.next;
+        }while (cur.next != null);
+        return cur;
     }
 
     /**
@@ -290,21 +305,22 @@ public class SingleLink<E> {
             System.out.println("链表为空");
             return;
         }
-        Node<E> temp = head;
+        Node<E> cur = head;
         Node<E> pre = null;
-        while (temp.next != null){
-            pre = temp;
-            temp = temp.next;
+        while (cur.next != null){
+            pre = cur;
+            cur = cur.next;
         }
         if(pre == null)
             head = head.next;
         else
-            pre.next = temp.next;
+            pre.next = cur.next;
         size--;
     }
 
     /**
      * 删除指定节点
+     * 两个指针：当前指针，前一个指针
      */
     void delete(Node<E> node){
         if(head == null){
@@ -312,16 +328,16 @@ public class SingleLink<E> {
             return;
         }
         Node<E> pre = null;
-        for (Node<E> temp = head;temp != null;temp = temp.next){
-            if(node.equalsData(temp)){
+        for (Node<E> cur = head;cur != null;cur = cur.next){
+            if(node.equalsData(cur)){
                 if(pre == null)
                     head = head.next;
                 else
-                    pre.next = temp.next;
+                    pre.next = cur.next;
                 size--;
                 break;
             }
-            pre = temp;
+            pre = cur;
         }
     }
 
@@ -329,21 +345,113 @@ public class SingleLink<E> {
      * 删除第n个节点
      */
     void deleteByIndex(int n){
-
+        if(n > size || n <= 0){
+            System.out.println("超出链表长度");
+            return;
+        }
+        Node<E> pre = null;
+        int i = 1;
+        for(Node<E> cur=head;cur != null;cur = cur.next){
+            if(i == n){
+                if(pre == null)
+                    head = head.next;
+                else
+                    pre.next = cur.next;
+                size--;
+                break;
+            }
+            i++;
+            pre = cur;
+        }
     }
 
     /**
      * 删除出现的第一个元素
      */
-    void deteleFirstByAddress(String address){
+    void deleteFirstByAddress(String address){
+        Node<E> pre = null;
+        for(Node<E> cur=head;cur != null;cur = cur.next){
+            String addrValue = null;
+            try {
+                Field addrField = cur.getData().getClass().getField("address");
+                addrValue = (String) addrField.get(cur.getData());
+            } catch (NoSuchFieldException | IllegalAccessException e) {
+                e.printStackTrace();
+            }
 
+            if(addrValue.equals(address)){
+                if(pre == null)
+                    head = head.next;
+                else
+                    pre.next = cur.next;
+                size--;
+                break;
+            }
+            pre = cur;
+        }
     }
 
     /**
      * 删除出现的所有元素
      */
-    void deteleAllByAddress(String address){
+    void deleteAllByAddress(String address){
+        Node<E> pre = null;
+        for(Node<E> cur=head;cur != null;cur = cur.next){
+            String addrValue = null;
+            try {
+                Field addrField = cur.getData().getClass().getField("address");
+                addrValue = (String) addrField.get(cur.getData());
+            } catch (NoSuchFieldException | IllegalAccessException e) {
+                e.printStackTrace();
+            }
 
+            if(addrValue.equals(address)){
+                if(pre == null)
+                    head = head.next;
+                else
+                    pre.next = cur.next;
+                size--;
+            }else{
+                pre = cur;
+            }
+        }
     }
 
+    /**
+     * 反转链表
+     * 两个指针：cur指针，next指针；一个新表头
+     */
+    void reverse(){
+        Node<E> newHead = null;
+        Node<E> cur;
+        Node<E> next;//临时保存当前节点的下个节点
+        for(cur = head;cur != null; cur = next){
+            size++;
+            next = cur.next;
+            cur.next = newHead;
+            newHead = cur;
+        }
+        head = newHead;
+    }
+
+    /**
+     * 从尾到头打印链表
+     * 使用栈数据结构的先进后出
+     */
+    void printLinkAfter(){
+        Stack<Node<E>> stack = new Stack<>();
+        Node<E> cur;
+        for(cur = head;cur != null;cur=cur.next){
+            stack.push(cur);
+        }
+        StringBuffer sb = new StringBuffer();
+        for(cur = head;cur != null;cur=cur.next){
+            Node<E> node = stack.pop();
+            E data = node.data;
+            sb.append(data.toString());
+            if(cur.next != null )
+                sb.append("=>");
+        }
+        System.out.print( "逆序size:" + size + ","+ sb.toString());
+    }
 }
