@@ -1,4 +1,4 @@
-package com.hgk.boot.struct.queue;
+package com.hgk.boot.struct.array_queue;
 
 /**
  * 顺序队列

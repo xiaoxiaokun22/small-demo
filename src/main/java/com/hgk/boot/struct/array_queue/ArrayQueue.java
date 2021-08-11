@@ -1,12 +1,15 @@
-package com.hgk.boot.struct.queue;
+package com.hgk.boot.struct.array_queue;
+
+import lombok.Data;
 
 /**
- * 循环队列（数组实现）
- * 初始化指针：frond = 0, rear = 0
- * 判空条件：rear == front
- * 判满条件：(rear + 1) % maxSize = front
+ * 普通队列（数组实现）
+ * 初始化指针 front = 0 , rear = 0
+ * 判空条件：front == rear
+ * 判满条件：rear == maxSize
  */
-public class CircleQueue {
+@Data
+public class ArrayQueue {
 
     private static final String EMPTY_QUEUE_DESC = "队列已经空了！";
 
@@ -14,14 +17,14 @@ public class CircleQueue {
 
     //存放队列
     int arr[];
-    //队列头 第一个元素
+    //队列头
     int front;
-    //队列尾 下一个要插入的元素位置
+    //队列尾
     int rear;
     //队列容量
     int maxSize;
 
-    public CircleQueue(int maxSize){
+    public ArrayQueue(int maxSize){
         this.maxSize = maxSize;
         this.front = 0;
         this.rear = 0;
@@ -37,7 +40,7 @@ public class CircleQueue {
             return;
         }
         arr[rear] = data;
-        rear = (rear + 1) % maxSize;
+        rear++;
     }
 
     /**
@@ -48,7 +51,7 @@ public class CircleQueue {
             System.out.println(EMPTY_QUEUE_DESC);
         }
         int data = arr[front];
-        front = (front + 1) % maxSize;
+        arr[front++] = 0;
         return data;
     }
 
@@ -56,10 +59,9 @@ public class CircleQueue {
      * 展示队列的数据
      */
     public void showQueue(){
-       int validCount = getValidCount();
-       for(int i = front;i<front + validCount;i++){
-           System.out.printf("arr[%d] = %d\n", i % maxSize, arr[i % maxSize]);
-       }
+        for(int i = 0;i<arr.length;i++){
+            System.out.printf("arr[%d] = %d\n", i, arr[i]);
+        }
     }
 
     /**
@@ -73,7 +75,7 @@ public class CircleQueue {
      * 是否已满
      */
     public boolean isFull(){
-        return (rear + 1) % maxSize == front;
+        return rear == maxSize;
     }
 
     /**
@@ -86,17 +88,5 @@ public class CircleQueue {
         return arr[front];
     }
 
-    /**
-     * 有效数据
-     */
-    public int getValidCount(){
-        /**
-         * maxSize 6
-         * rear 1
-         * front 5
-         * validCount = 2
-         */
-        return (rear-front+maxSize) % maxSize;
-    }
 
 }
