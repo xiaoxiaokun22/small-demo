@@ -8,7 +8,7 @@ import java.util.concurrent.locks.ReentrantLock;
 class Ticket{
     private int num = 30;
 
-    //创建可重入锁
+    //创建可重入锁,默认为非公平锁
     private final ReentrantLock reenlock = new ReentrantLock();
 
     public void sale(){

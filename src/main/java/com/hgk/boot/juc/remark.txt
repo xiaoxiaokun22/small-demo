@@ -14,3 +14,9 @@ Lock发生异常时不会主动释放锁，所以需要在try-finaly里去主动
   当判断num!=1时，该线程A进入wait状态。然后其他的某个线程B在运行，B运行完，A又抢到锁，此时A开始执行时不会再判断
   num，而是运行后面的do something操作。要使用while回去重新判断。wait的特点，在哪里等待，被唤醒时，就在哪里开始执行。
 4.ReentrantLock多个condition和单个condition有啥区别？//TODO
+5.synchronized具体表现形式有哪几种？
+  普通同步方法，锁的是当前对象
+  静态同步方法，锁的是当前类的class
+  同步方法块，锁是synchronized()括号里配置的对象
+6.synchronized锁的8种情况？
+7.公平锁和非公平锁
