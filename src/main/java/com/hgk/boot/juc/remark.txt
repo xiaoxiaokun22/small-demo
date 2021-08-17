@@ -1,0 +1,16 @@
+1.lock和synchronized的区别是什么
+Lock是一个接口，synchronized是一个关键字。
+Lock不会主动加锁释放锁，是认为操作锁的。而synchronized是自动加锁释放锁的，在方法执行完或者异常时会释放锁。
+Lock发生异常时不会主动释放锁，所以需要在try-finaly里去主动释放锁。而synchronized在发生异常时会释放锁。
+多线程竞争越激烈，Lock的性能要优与synchronized
+2.多线程编程步骤：
+    创建资源类=>资源类中判断，干活，唤醒=>创建多线程调用资源类的方法=>防止虚假唤醒问题
+3.wait()方法存在什么问题？
+  1>虚假唤醒问题：
+  例如伪代码 method sync (){
+    if(num != 1){ this.wait(); }
+    do something
+  }
+  当判断num!=1时，该线程A进入wait状态。然后其他的某个线程B在运行，B运行完，A又抢到锁，此时A开始执行时不会再判断
+  num，而是运行后面的do something操作。要使用while回去重新判断。wait的特点，在哪里等待，被唤醒时，就在哪里开始执行。
+4.ReentrantLock多个condition和单个condition有啥区别？//TODO
