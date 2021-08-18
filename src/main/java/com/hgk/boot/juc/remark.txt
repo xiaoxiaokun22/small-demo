@@ -1,5 +1,5 @@
 1.lock和synchronized的区别是什么
-Lock是一个接口，synchronized是一个关键字。
+Lock是一个接口，显示锁，synchronized是一个关键字,隐式锁。
 Lock不会主动加锁释放锁，是认为操作锁的。而synchronized是自动加锁释放锁的，在方法执行完或者异常时会释放锁。
 Lock发生异常时不会主动释放锁，所以需要在try-finaly里去主动释放锁。而synchronized在发生异常时会释放锁。
 多线程竞争越激烈，Lock的性能要优与synchronized
@@ -20,3 +20,15 @@ Lock发生异常时不会主动释放锁，所以需要在try-finaly里去主动
   同步方法块，锁是synchronized()括号里配置的对象
 6.synchronized锁的8种情况？
 7.公平锁和非公平锁
+8.可重入锁（递归锁）和不可重入锁
+  多个锁嵌套，获得最外层锁后，可以进入内层锁(同一把锁)的代码区域，就是可重入锁，synchronized和Lock都是可重入锁。
+9.如何证明synchronized和Lock是可重入锁？
+10.死锁的原因？
+11.如何验证是否死锁？
+    jps -l  --- 查看当前程序运行的进程
+    jstack 进程号 --- 查看jvm堆栈信息。
+12.创建线程的方式有哪些？
+   继承Thread类
+   实现Runnable接口
+   Callable接口
+   线程池

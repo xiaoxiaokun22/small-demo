@@ -63,7 +63,7 @@ public class ThreadDemo03 {
      * 解决方案
      * 1.ConcurrentHashMap
      */
-    public static void test02(){
+    public static void test02() {
         //ConcurrentModificationException
 //        Map<String,Object> map =  new HashMap<>();
         //1.CopyOnWriteArraySet
@@ -74,6 +74,11 @@ public class ThreadDemo03 {
                 map.put(String.valueOf(finalI),UUID.randomUUID().toString().substring(0,8));
                 System.out.println(map);
             },String.valueOf(i)).start();
+        }
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 }
