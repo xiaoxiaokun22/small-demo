@@ -55,7 +55,6 @@ public class BootMain{
 //    }
 
     public static void main(String[] args) throws Exception {
-        AutowireCapableBeanFactory
         //ioc容器测试
         ApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
 //        Brand brand = context.getBean(Brand.class);
