@@ -1,6 +1,7 @@
 package com.hgk.boot;
 
 import com.hgk.boot.config.AppConfig;
+import com.hgk.boot.config.Brand;
 import com.hgk.boot.entity.User;
 import com.hgk.boot.interceptor.MyInterceptor;
 import com.hgk.boot.proxy.ProxyBean;
@@ -11,9 +12,13 @@ import org.mybatis.spring.annotation.MapperScan;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.aop.framework.ProxyFactoryBean;
+import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
 import sun.misc.BASE64Decoder;
@@ -33,7 +38,7 @@ import java.util.concurrent.atomic.AtomicLong;
 //@MapperScan("com.hgk.boot.mapper")
 public class BootMain{
 
-//    private static Logger log = LoggerFactory.getLogger(BootMain.class);
+    private static Logger log = LoggerFactory.getLogger(BootMain.class);
 
     private static final String ENCODING = "UTF-8";
     private static final String SIGNATURE_ALGORITHM = "SHA1WithRSA";
@@ -50,18 +55,21 @@ public class BootMain{
 //    }
 
     public static void main(String[] args) throws Exception {
-
+        AutowireCapableBeanFactory
         //ioc容器测试
-//        ApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
-//        User user = context.getBean(User.class);
-//        log.info(user.getNote());
+        ApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
+//        Brand brand = context.getBean(Brand.class);
+        Brand brand = (Brand) context.getBean("Brand");
+        log.info(brand.getDesc());
+
         //约定编程测试
 //        HelloService helloService = new HelloServiceImpl();
 //        HelloService proxy = (HelloService) ProxyBean.getProxyBean(helloService,new MyInterceptor());
 //        proxy.sayHello("hello xiaoming");
-        BootMain bm = new BootMain();
-        int num = 10;
-        bm.test1();
+
+//        BootMain bm = new BootMain();
+//        int num = 10;
+//        bm.test1();
     }
 
     public void test1(){

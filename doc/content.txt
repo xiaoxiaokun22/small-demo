@@ -53,4 +53,77 @@ User u2 = new User(1,"hgk");
 HashSet<User> hashset = new HashSet<>();
 hashset.add(u1);
 hashset.add(u2);
-hashset.size 输出为2，而不是1。
+hashset.size 输出为2，而不是1。因为计算数组下标的时候，在没有自己重写hashcode时，调用了Object的hashcode方法，而
+Object的hashcode返回的是由对象存储地址转化得到的值，因此u1和u2的hash不一样，计算得到的下标就不一样，就会有两个值。
+
+===[spring]===
+1.spring是什么？为什么要用spring？spring有哪些模块组成？
+spring是一个轻量级的控制反转和面向切面编程的J2EE框架，是一个容器框架，用来装javabean的。
+核心模块7个：spring core,spring aop,spring web,spring mvc,spring dao,spring orm,spring context
+2.spring bean的生命周期是什么？
+bean初始化：扫描资源定位-解析类定义到BeanDefinition中-实例化
+bean初始化-依赖注入 -> 接口BeanNameAware实现类的setBeanName() -> 接口BeanFactoryAware实现类的setBeanFactory()
+-> 接口ApplicationContextAware实现类的setApplicationContext() -> 接口BeanPostProcessor实现类的前置初始化方法
+-> @PostConstruct标注的自定义的初始化方法 ->  接口InitializingBean实现类的afterPropertiesSet()
+-> 接口BeanPostProcessor实现类的后置初始化方法 -> bean生存期使用bean -> @PreDestroy标注的自定义的销毁方法
+-> 接口DisposableBean实现类的destroy()
+3.BeanFactory 和 ApplicationContext 的区别是什么？
+相同点：
+    1.都是接口，ApplicationContext继承了BeanFactory
+    2.都可以用来配置xml属性
+    3.都可以使用getBean()获取bean。
+不同点：
+    1.BeanFactory调用getBean()方法的时候才去实例化。而ApplicationContext在启动容器的时候把所有的bean都实例化了，不会等调用getBean()。
+    2.ApplicationContext支持国际化，BeanFactory不支持
+    3.ApplicationContext提供在监听器中注册bean的事件。
+    4.ApplicationContext支持统一的资源文件访问方式。
+    5.ApplicationContext的核心实现是ClassPathXmlApplicationContext,BeanFactory是XmlApplicationContext。
+4.说说你对Spring Ioc的理解？
+ioc是一个设计思想，就是将原来自己手动创建对象的控制权，交给spring框架来管理。
+ioc容器是spring实现ioc的载体，ioc容器实际上是一个map，
+里面存放的是各种对象。
+作用：管理对象的创建和依赖关系的维护，方便解耦。
+实现原理：工厂模式加反射机制。
+5.说说你对Spring Aop的理解？
+
+6.Spring事务的实现方式？
+7.Spring事务的底层原理？有哪些隔离级别？有哪几种事务传播行为？
+8.SpringMVC运行流程和启动流程？
+9.Spring DI（依赖注入）是什么？有什么优点？注入方式有哪些？
+依赖注入
+10.Spring框架中的Bean是线程安全的么？如果线程不安全，那么如何处理?
+spring中的bean默认单例模式，框架没有对bean进行多线程的处理。
+如果bean是无状态的（没有成员变量,不存储数据），那么是线程安全的。
+如果bean是有状态的（有成员变量，存储数据），那么它是线程不安全的。
+应该如何解决呢，使用ThreadLocal，为每个线程提供一个独立的变量副本，不同线程操作自己的副本变量。
+ThreadLocal和线程同步机制都是为了解决多线程中相同变量的访问冲突问题。同步机制采用了“时间换空间”的方式，仅提供一份变量，
+不同的线程在访问前需要获取锁，没获得锁的线程则需要排队。而ThreadLocal采用了“空间换时间”的方式。ThreadLocal会为每一个
+线程提供一个独立的变量副本，从而隔离了多个线程对数据的访问冲突。因为每一个线程都拥有自己的变量副本，从而也就没有必要对该变量进行同步了。
+11.Spring bean 的作用域？
+5种
+Singleton，每次getBean()都是同一个对象，是单例的。
+Prototype，每次getBean()都会创建一个新的对象。
+Request，每次http请求实例化一个bean。
+Session，在一次会话中共享一个bean。
+global-session，不常用。
+12.Spring自动装配有哪些方式？
+5种
+no，默认的方式是不进行自动装配的，通过手动设置ref属性来装配bean，也可以使用@Autowired注解来手动注入需要的属性。
+ByName
+ByType
+Constructor，利用构造函数进行装配，并且构造函数的参数通过ByType的方式自动装配。
+Asutodetect，自动探测，如果有构造函数，通过construct的方式自动装配，否则使用ByType的方式自动装配。
+使用@Autowired时，如果存在找到多个bean的情况下，使用@Qualifier("")通过名称匹配具体的bean。
+13.AOP现有两个主要的流行框架，即Spring AOP和Spring+AspectJ关系?
+14.Spring中用到哪些设计模式？
+15.@Component 和 @Bean 的区别是什么？
+16.@Component，@ComponentScan的作用是什么？
+@Component 是标明哪个类被扫描进入Spring IoC容器。
+@ComponentScan 则是标明采用何种策略去扫描装配 Bean，basePackages配置项首先可以定义扫描的包名，
+在没有定义的情况下，它只会扫描当前包和其子包下的路径。
+17.哪些常用的注解标明了@Component？
+@Service
+18.哪些常用的注解标明了@ComponentScan?
+@SpringBootApplication
+
+
