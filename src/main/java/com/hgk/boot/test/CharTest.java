@@ -30,7 +30,7 @@ public class CharTest {
 //        test01();
 //        test02();
 //        test03();
-        test04();
+//        test04();
 //        test05();
 //        test06();
 //        test07();
@@ -46,6 +46,7 @@ public class CharTest {
 //        test17();
 //        test18();
 //        test19();
+        test20();
     }
 
     private static class A{
@@ -607,5 +608,28 @@ public class CharTest {
         //3.使用 For Each EntrySet 的方式进行遍历
     }
 
+    /**
+     * 输入一个字符串
+     * 实现字符串反转并输出
+     */
+    public static void test20(){
+         Scanner sc = new Scanner(System.in);
+         System.out.println("请输入一个字符串：");
+         String str = sc.nextLine();
+         //1
+         String res = "";
+         for(int i = str.length()-1;i >=0;i--){
+             char c = str.charAt(i);
+             res += c;
+         }
+         System.out.println("字符串反转结果输出：" + res);
+         //2
+        String res2 = "";
+         char[] arr = str.toCharArray();
+         for(int i = arr.length-1;i >= 0;i--){
+             res2 += arr[i];
+         }
+        System.out.println("字符串反转结果输出：" + res2);
+    }
 
 }
