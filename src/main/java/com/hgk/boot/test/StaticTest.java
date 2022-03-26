@@ -20,6 +20,7 @@ public class StaticTest {
         System.out.println("===静态代码块1 start===");
         System.out.println(address);
         System.out.println(scope);
+        //System.out.println(age);//不能调用非静态变量
 //        System.out.println(address2);//会编译错误 java: 非法前向引用
         System.out.println("===静态代码块1 end===");
     }

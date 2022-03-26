@@ -21,10 +21,10 @@ class UserData{
 //    }
 
     //test03()---解决volatile不保证原子性造成的问题（Atomic）---
-//    AtomicInteger atomicAge = new AtomicInteger(0);
-//    public void ageAtomicIncr(){
-//        atomicAge.getAndIncrement();
-//    }
+    AtomicInteger atomicAge = new AtomicInteger(0);
+    public void ageAtomicIncr(){
+        atomicAge.getAndIncrement();
+    }
 
     //test04()---解决volatile不保证原子性造成的问题(synchronized)---
     volatile int age = 0;

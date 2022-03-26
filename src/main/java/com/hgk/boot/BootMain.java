@@ -56,10 +56,10 @@ public class BootMain{
 
     public static void main(String[] args) throws Exception {
         //ioc容器测试
-        ApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
+//        ApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
 //        Brand brand = context.getBean(Brand.class);
-        Brand brand = (Brand) context.getBean("Brand");
-        log.info(brand.getDesc());
+//        Brand brand = (Brand) context.getBean("Brand");
+//        log.info(brand.getDesc());
 
         //约定编程测试
 //        HelloService helloService = new HelloServiceImpl();
@@ -69,6 +69,8 @@ public class BootMain{
 //        BootMain bm = new BootMain();
 //        int num = 10;
 //        bm.test1();
+
+
     }
 
     public void test1(){

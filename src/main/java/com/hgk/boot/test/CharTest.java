@@ -21,6 +21,7 @@ import java.lang.reflect.*;
 import java.math.BigDecimal;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class CharTest {
@@ -29,7 +30,7 @@ public class CharTest {
 
 //        test01();
 //        test02();
-//        test03();
+        test03();
 //        test04();
 //        test05();
 //        test06();
@@ -46,7 +47,7 @@ public class CharTest {
 //        test17();
 //        test18();
 //        test19();
-        test20();
+//        test20();
     }
 
     private static class A{
@@ -118,13 +119,23 @@ public class CharTest {
         map.put("age",18);
         System.out.println("change之前(HashMap<String,Object>):" + map.get("age"));
         change(map);
-        System.out.println("change之前:" + map.get("age"));
+        System.out.println("change之后:" + map.get("age"));
+
+        Integer a = 290;
+        int b =6;
+        System.out.println("change之前(Integer,int):" + a + "-" + b);
+        change(a,b);
+        System.out.println("change之后:" + a + "-" + b);
     }
     public  static void change(int[] arrProp){
         arrProp[0] = 100;
     }
     public  static void change(HashMap mapProp){
         mapProp.put("age","25");
+    }
+    public  static void change(Integer a,int b){
+        a = 20;
+        b = 21;
     }
 
     /**
@@ -331,6 +342,12 @@ public class CharTest {
     public static void test11(){
 
         List<String> list = new ArrayList<>(Arrays.asList("10","11","12"));
+        //错误代码
+        for(String str: list){
+            if(str.equals("10")){
+                list.remove(str);
+            }
+        }
         //1.迭代器
         Iterator<String> iterable = list.iterator();
         while (iterable.hasNext()){
@@ -352,17 +369,17 @@ public class CharTest {
      * static关键字的应用场景
      */
     public static void test12(){
-        StaticTest st = new StaticTest(25,"haoguokun");
+//        StaticTest st = new StaticTest(25,"haoguokun");
 //        StaticTest st2 = new StaticTest(26,"haoguokun");
 
 //        st.getName();
 
-//        StaticTest.setScope("18-26");
-//        System.out.println(StaticTest.scope);
+        StaticTest.setScope("18-26");
+        System.out.println(StaticTest.scope);
     }
 
     @Data
-    public static class UserFanshe{
+    public static class UserFanshe extends UserFansheFather{
         private String name;
         public String desc;
         private Integer height;
@@ -377,6 +394,39 @@ public class CharTest {
             this.height = height;
         }
         public void setNameAndDesc(String name, String desc){
+            this.name = name;
+            this.desc = desc;
+        }
+
+        private static void setDescTest(String desc){
+        }
+
+    }
+
+    @Data
+    public static class UserFansheFather{
+        private String name;
+        public String desc;
+        private Integer height;
+
+        public String qq;
+        private String email;
+
+        public UserFansheFather(){
+        }
+        public UserFansheFather(Integer height){
+            this.height = height;
+        }
+        public UserFansheFather(String name,Integer height){
+            this.name = name;
+            this.height = height;
+        }
+        public void setNameAndDesc(String name, String desc){
+            this.name = name;
+            this.desc = desc;
+        }
+
+        public void setNameAndDescFather(String name, String desc){
             this.name = name;
             this.desc = desc;
         }
@@ -569,6 +619,8 @@ public class CharTest {
         treeMapList.put("99","ba");
         treeMapList.put("51","fz");
         System.out.println(treeMapList);
+        System.out.println(treeMapList.lowerEntry("13"));// < 13
+        System.out.println(treeMapList.floorEntry("13"));// <= 13
     }
 
     /**
